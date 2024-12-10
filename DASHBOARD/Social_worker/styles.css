@@ -1,0 +1,128 @@
+/*------------------------------------------------------------------
+    1. import fonts
+-------------------------------------------------------------------*/
+
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,600,700,900');
+@import url('https://fonts.googleapis.com/css?family=Raleway:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i');
+@import url('https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i');
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,400i,500,500i,700,700i');
+@import url('https://fonts.googleapis.com/css?family=Arvo:400,400i,700,700i');
+@import url('https://fonts.googleapis.com/css?family=Rajdhani:300,400,500,600,700');
+/*----------------------------------------------------------------
+Import files
+----------------------------------------------------------------*/
+@import url(css/animate.css);
+@import url(css/flaticon.css);
+@import url(css/font-awesome.min.css);
+/*----------------------------------------------------------------
+Body styles
+----------------------------------------------------------------*/
+/* style.css */
+
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+}
+
+/* Navbar */
+.navbar {
+    background-color: #343a40 !important;
+    border-bottom: 2px solid #495057;
+}
+
+.navbar-brand {
+    color: #ffffff !important;
+    font-weight: bold;
+}
+
+.navbar-brand img {
+    margin-right: 10px;
+}
+
+.nav-link {
+    color: #ffffff !important;
+}
+
+.nav-link:hover {
+    color: #adb5bd !important;
+}
+
+.navbar-toggler-icon {
+    background-color: #ffffff;
+}
+
+/* Sidebar */
+#sidebar {
+    background-color: #343a40;
+    min-height: 100vh;
+    padding-top: 20px;
+    position: fixed;
+    width: 15%;
+}
+
+.sidebar-sticky {
+    position: sticky;
+    top: 0;
+}
+
+.sidebar .nav-link {
+    color: #ffffff;
+    font-weight: 500;
+    padding: 10px 20px;
+    display: block;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.sidebar .nav-link.active,
+.sidebar .nav-link:hover {
+    color: #adb5bd;
+    background-color: #495057;
+    border-radius: 5px;
+}
+
+.sidebar .nav-item .collapse {
+    background-color: #495057;
+}
+
+.sidebar .nav-item .collapse .nav-link {
+    color: #ffffff;
+    padding: 5px 30px;
+    font-size: 14px;
+}
+
+.sidebar .nav-item .collapse .nav-link:hover {
+    color: #adb5bd;
+    background-color: #6c757d;
+}
+
+/* Main Content */
+main {
+    margin-left: 15%;
+    padding: 20px;
+    background-color: #ffffff;
+}
+
+/* Utilities */
+.ml-auto {
+    margin-left: auto !important;
+}
+
+.nav-item {
+    margin-bottom: 10px;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    #sidebar {
+        display: none;
+    }
+
+    .container-fluid {
+        padding: 0 10px;
+    }
+}
+
+
