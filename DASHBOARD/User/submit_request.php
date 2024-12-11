@@ -22,16 +22,16 @@ $check_stmt->bind_result($existing_request_number, $existing_status);
 $check_stmt->fetch();
 $check_stmt->close();
 
-// If an adoption request already exists, show the thank-you message and hide the form
-if ($existing_request_number) {
+// If an adoption request already exists and its status is 'submitted', show the thank-you message and hide the form
+if ($existing_request_number && $existing_status === 'submitted') {
     echo "<div style='text-align: center; margin-top: 50px;'>
             <h2>Thank You!</h2>
-            <p>You have already submitted an adoption request.</p>
+            <p>Your Adoption Request has already been submitted.</p>
             <p>Your Request Number: <strong>" . htmlspecialchars($existing_request_number) . "</strong></p>
             <p>Status: <strong>" . htmlspecialchars($existing_status) . "</strong></p>
-            <a href='thank_you_page.php' style='text-decoration: none; color: white; background-color: #4caf50; padding: 10px 20px; border-radius: 5px;'>Go to Thank You Page</a>
+            <a href='index.php' style='text-decoration: none; color: white; background-color: #4caf50; padding: 10px 20px; border-radius: 5px;'>Back to Dashboard</a>
           </div>";
-    exit;
+    exit; // Stop further execution to prevent form re-display
 }
 
 // Fetch adopter's name and additional data from the prospective_parents table
@@ -95,7 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Define status explicitly
-$status = 'pending';
+    $status = 'pending';
 
     // Bind parameters, including the additional fields from prospective_parents
     $stmt->bind_param(
@@ -119,7 +119,12 @@ $status = 'pending';
 
     // Execute the query and check success
     if ($stmt->execute()) {
-        echo "<script>alert('Adoption request submitted successfully.'); window.location.href = 'thank_you_page.php';</script>";
+        echo "<div style='text-align: center; margin-top: 50px;'>
+                <h2>Thank You!</h2>
+                <p>Your Adoption Request has been submitted successfully.</p>
+                <a href='index.php' style='text-decoration: none; color: white; background-color: #4caf50; padding: 10px 20px; border-radius: 5px;'>Back to Dashboard</a>
+              </div>";
+        exit; // Stop further execution to prevent form re-display
     } else {
         echo "Error: " . $stmt->error;
     }

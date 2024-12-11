@@ -103,143 +103,86 @@ body {
         gap: 10px;
     }
 }
-/* Kids Corner Section */
+/* Section styling for Kids Corner */
 .kids-corner {
-    padding: 100px 20px 40px; /* Push content below navbar */
-    background-color: #f9f9f9; /* Optional background for better visibility */
+    background-color: #fff;
+    padding: 60px 20px 30px;
     text-align: center;
 }
 
 .kids-corner .section-title {
     font-size: 36px;
     font-weight: bold;
-    margin-bottom: 15px;
     color: #333;
+    margin-bottom: 20px;
 }
 
 .kids-corner .section-description {
     font-size: 18px;
-    margin: 0 auto 40px;
-    color: #5c677a;
-    max-width: 800px; /* Optional: limits paragraph width for readability */
+    color: #555;
+    line-height: 1.6;
+    margin: 0 auto;
+    max-width: 800px;
+    margin-bottom: 40px;
 }
 
-
-/* Profiles Grid */
-.container {
-  width: 90%;
-  margin: 0 auto;
-  max-width: 1200px;
-}
-
+/* Profile grid */
 .profiles-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 20px;
-    position: relative;
+    padding: 0 20px;
 }
 
-/* Profile Card */
+/* Profile card styling */
 .profile-card {
-    background-color: #f7f8fa;
+    background-color: #fff;
+    border: 1px solid #ddd;
     border-radius: 8px;
+    overflow: hidden;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    text-align: center;
+    transition: transform 0.3s ease;
 }
 
 .profile-card img {
     width: 100%;
-    max-height: 200px;
-    object-fit: contain;
-    border-radius: 8px;
-    margin-bottom: 15px;
+    height: auto;
+    object-fit: cover;
 }
 
 .profile-card h3 {
-    font-size: 24px;
-    margin-bottom: 10px;
+    font-size: 22px;
+    font-weight: bold;
     color: #333;
+    padding: 15px;
+    background-color: #f7f7f7;
 }
 
 .profile-card p {
     font-size: 16px;
-    margin-bottom: 20px;
-    color: #666;
+    color: #555;
+    padding: 15px;
+    line-height: 1.6;
 }
 
 .read-more-btn {
     display: inline-block;
-    padding: 10px 20px;
+    padding: 10px 15px;
     background-color: #007bff;
-    color: white;
+    color: #fff;
     text-decoration: none;
     border-radius: 5px;
-    font-size: 16px;
+    margin: 15px;
     transition: background-color 0.3s ease;
 }
 
 .read-more-btn:hover {
     background-color: #0056b3;
 }
-/*kids profiles*/
 
-
-.profile-container {
-    max-width: 900px;
-    margin: 50px auto;
-    padding: 20px;
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(5px); /* Slight blur to make text more readable */
-    background-color: rgba(255, 255, 255, 0.85); /* Slight opacity to see the background image */
-}
-
-.profile-header {
-    text-align: center;
-    margin-bottom: 30px;
-}
-
-.profile-header img.profile-logo {
-    width: 150px;
-    margin-bottom: 15px;
-}
-
-.profile-header h1 {
-    font-size: 36px;
-    color: #4b9b4a;
-}
-
-.profile-header .tagline {
-    font-size: 18px;
-    color: #555;
-}
-
-.profile-details, .profile-quote, .additional-info {
-    margin-bottom: 20px;
-}
-
-.profile-details h2, .profile-quote h2, .additional-info h2 {
-    background-color: #e5f139ef;
-    color: black;
-    padding: 10px;
-    border-radius: 5px;
-}
-
-.profile-details p, .profile-quote p, .additional-info p {
-    font-size: 16px;
-    color: #333;
-    margin: 15px 0;
-}
-
-.profile-quote p {
-    font-style: italic;
-    font-size: 18px;
-}
-
-.additional-info {
-    text-align: left;
+/* Hover effect for profile cards */
+.profile-card:hover {
+    transform: translateY(-5px);
 }
 
 /* Info Columns Layout */

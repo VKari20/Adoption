@@ -15,13 +15,12 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Fetch data from the database
-$sql = "SELECT parent_id AS id, adoption_request_number, adopter_name, adopter_email, contact_number, status FROM adoption_requests";
+// Fetch data from the home_study_applications table
+$sql = "SELECT id AS id, full_name, applicant_email, contact_info, status FROM home_study_applications";
 $result = $conn->query($sql);
 
 // Check if the query was successful
 if (!$result) {
-    // Output the error if the query failed
     die("Error executing query: " . $conn->error);
 }
 
@@ -32,19 +31,17 @@ include "nav/header.php";
 <!-- Main Content -->
 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">All Adoption Requests</h1>
-        <a href="downlaod_requests.php" class="btn btn-success">Download Report</a>
+        <h1 class="h2">New Home Study Applications</h1>
+        <!--<a href="download_applications.php" class="btn btn-success">Download Report</a>-->
     </div>
 
     <div class="container mt-5">
-      
-        <table id="adoptionRequests" class="table table-striped table-bordered">
+        <table id="homeStudyApplications" class="table table-striped table-bordered">
             <thead>
                 <tr>
                     <th>S.No</th>
-                    <th>Adoption Request Number</th>
-                    <th>Adopter Name</th>
-                    <th>Adopter Email</th>
+                    <th>Full Name</th>
+                    <th>Applicant Email</th>
                     <th>Contact Number</th>
                     <th>Status</th>
                     <th>Action</th>
@@ -59,12 +56,11 @@ include "nav/header.php";
                     while ($row = $result->fetch_assoc()) {
                         echo "<tr>";
                         echo "<td>{$serialNo}</td>"; // Display the serial number
-                        echo "<td>{$row['adoption_request_number']}</td>";
-                        echo "<td>{$row['adopter_name']}</td>";
-                        echo "<td>{$row['adopter_email']}</td>";
-                        echo "<td>{$row['contact_number']}</td>";
+                        echo "<td>{$row['full_name']}</td>";
+                        echo "<td>{$row['applicant_email']}</td>";
+                        echo "<td>{$row['contact_info']}</td>";
                         echo "<td>{$row['status']}</td>";
-                        echo "<td><a href='view_request.php?id={$row['id']}' class='btn btn-primary btn-sm'>View</a></td>";
+                        echo "<td><a href='view_home_study_application.php?id={$row['id']}' class='btn btn-primary btn-sm'>View</a></td>";
                         echo "</tr>";
                         $serialNo++; // Increment the serial number
                     }
@@ -80,7 +76,7 @@ include "nav/header.php";
 <!-- Initialize DataTable -->
 <script>
     $(document).ready(function() {
-        $('#adoptionRequests').DataTable();
+        $('#homeStudyApplications').DataTable();
     });
 </script>
 

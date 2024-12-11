@@ -27,28 +27,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $error = "Username is already taken.";
             } else {
                 // Hash the password
-                $hashedPassword = password_hash(password: $password, PASSWORD_DEFAULT);
+                $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-                // Assign a default role (e.g., 'user')
-                $sql = "SELECT RoleID FROM role WHERE RoleName = 'user'";
-                $roleResult = $conn->query($sql);
-                if ($roleResult->num_rows > 0) {
-                    $roleRow = $roleResult->fetch_assoc();
-                    $userRoleID = $roleRow['RoleID'];
-                } else {
-                    // Create default 'user' role if not exists
-                    $sql = "INSERT INTO role (RoleName, Description) VALUES ('user', 'Standard user role')";
-                    $conn->query($sql);
-                    $userRoleID = $conn->insert_id;
-                }
+                // Fixed role ID for social worker
+                $socialWorkerRoleID = 7;
 
                 // Insert new user into the database
                 $sql = "INSERT INTO users (username, password, role) VALUES (?, ?, ?)";
                 $stmt = $conn->prepare($sql);
                 if ($stmt) {
-                    $stmt->bind_param("ssi", $username, $hashedPassword, $userRoleID);
+                    $stmt->bind_param("ssi", $username, $hashedPassword, $socialWorkerRoleID);
                     $stmt->execute();
-                    $success = "Registration successful. You can now <a href='login.php'>log in</a>.";
+                    $success = "Registration successful as Social Worker. You can now <a href='login.php'>log in</a>.";
                     $stmt->close();
                 } else {
                     $error = "Error preparing the query: " . $conn->error;
@@ -68,7 +58,7 @@ $conn->close();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up - OrphanConnect</title>
+    <title>Social Worker Sign Up - OrphanConnect</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -128,7 +118,7 @@ $conn->close();
 </head>
 <body>
 <div id="signup-container">
-    <h2>Sign Up for OrphanConnect</h2>
+    <h2>Sign Up as a Social Worker</h2>
     <?php
     if (!empty($error)) {
         echo "<div class='error'>$error</div>";
@@ -155,13 +145,3 @@ $conn->close();
 </div>
 </body>
 </html>
-<?php
-// Ensure only admin can register users
-//session_start();
-//if ($_SESSION['role'] != 'admin') {
-    //header('Location: login.php');
-    //exit();
-//}
-
-// Handle registration logic here...
-?>

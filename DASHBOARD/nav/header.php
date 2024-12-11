@@ -105,6 +105,27 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" data-toggle="collapse" href="#collapseAdoption" role="button" aria-expanded="false" aria-controls="collapseAdoption">
+                                Home Study Applications
+                            </a>
+                            <div class="collapse" id="collapseAdoption">
+                                <ul class="nav flex-column ml-3">
+                                <li class="nav-item">
+                                        <a class="nav-link" href="all_requests.php">All Requests</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="new_home_study_requests.php">New Requests</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="accepted_requests.php">Accepted Requests</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="rejected_requests.php">Rejected Requests</a>
+                                    </li>
+                                    
+                                </ul>
+                            </div>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="collapse" href="#collapseAdoption" role="button" aria-expanded="false" aria-controls="collapseAdoption">
                                 Adoption Request
                             </a>
                             <div class="collapse" id="collapseAdoption">

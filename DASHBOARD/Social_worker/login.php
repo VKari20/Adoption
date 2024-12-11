@@ -3,43 +3,6 @@ session_start();
 
 require_once 'connection.php'; // Import the database connection
 
-// Step 1: Ensure the 'social worker' role exists
-$sql = "SELECT RoleID FROM role WHERE RoleName = 'social worker'";
-$result = $conn->query($sql);
-
-if ($result->num_rows == 0) {
-    // If the 'social worker' role does not exist, insert it
-    $sql = "INSERT INTO role (RoleName, Description) VALUES ('social worker', 'Social Worker with limited access')";
-    $conn->query($sql);
-}
-
-// Step 2: Ensure the 'social worker' user exists (Create social worker user only if it doesn't exist)
-// $sql = "SELECT user_id FROM users WHERE username = 'socialworker'";
-// $result = $conn->query($sql);
-
-// if ($result->num_rows == 0) {
-//     // If no social worker user exists, create one
-//     $socialWorkerUsername = "socialworker"; // Social Worker username
-//     $socialWorkerPassword = "worker1234"; // Social Worker password
-//     $hashedPassword = password_hash($socialWorkerPassword, PASSWORD_DEFAULT);
-
-//     // Get RoleID for 'social worker'
-//     $sql = "SELECT RoleID FROM role WHERE RoleName = 'social worker'";
-//     $roleResult = $conn->query($sql);
-//     $row = $roleResult->fetch_assoc();
-//     $socialWorkerRoleID = $row['RoleID'];
-
-//     // Insert the social worker user into the 'users' table
-//     $sql = "INSERT INTO users (username, password, role) VALUES (?, ?, ?)";
-//     $stmt = $conn->prepare($sql);
-//     if ($stmt) {
-//         $stmt->bind_param("ssi", $socialWorkerUsername, $hashedPassword, $socialWorkerRoleID);
-//         $stmt->execute();
-//         $stmt->close();
-//     }
-// }
-
-// Step 3: Handle the login form submission
 $error = '';
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $socialWorkerUsername = $_POST['username'];
@@ -60,15 +23,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             // Verify the password
             if (password_verify($socialWorkerPassword, $user['password'])) {
-                // Password matches - set session variables
-                $_SESSION['social_worker_logged_in'] = true;
-                $_SESSION['social_worker_username'] = $socialWorkerUsername;
-                $_SESSION['user_id'] = $user['user_id'];
-                $_SESSION['role'] = $user['role'];
+                // Ensure user role is 'social worker'
+                if ($user['role'] == 7) { // Assuming 7 is the RoleID for 'social worker'
+                    // Password matches - set session variables
+                    $_SESSION['social_worker_logged_in'] = true;
+                    $_SESSION['social_worker_username'] = $socialWorkerUsername;
+                    $_SESSION['user_id'] = $user['user_id'];
+                    $_SESSION['role'] = $user['role'];
 
-                // Redirect to social worker's dashboard
-                header("Location:index.php");
-                exit;
+                    // Redirect to social worker's dashboard
+                    header("Location: index.php");
+                    exit;
+                } else {
+                    $error = "You do not have social worker access.";
+                }
             } else {
                 // Incorrect password
                 $error = "Invalid username or password.";
@@ -86,6 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 $conn->close();
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">

@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kids Corner Profiles - AdoptEase</title>
     <link rel="stylesheet" href="style.css">
-
+</head>
 
 
     <section class="kids-corner">
@@ -32,7 +32,7 @@
                 <div class="profile-card">
                     <img src="Image/child.png" alt="Profile of Andy">
                     <h3>Tayten| July 2024</h3>
-                    <p>Let’s go on this incredible journey together! We can nurture my love for soccer, explore new adventures, and...</p>
+                    <p>Let’s go on this incredible journey together! We can nurture my love for drawing, explore new art, and...</p>
                     <a href="../auth/" class="read-more-btn">Read More</a>
                 </div>
 
@@ -53,19 +53,19 @@
                 </div>
                 <div class="profile-card">
                     <img src="Image/child7.png" alt="Profile of Andy">
-                    <h3>Andy | July 2024</h3>
-                    <p>Let’s go on this incredible journey together! We can nurture my love for soccer, explore new adventures, and...</p>
+                    <h3>Sandra | June 2024</h3>
+                    <p>Let’s go on this incredible journey together! We can nurture my love for reading, explore new adventures, and...</p>
                     <a href="../auth/" class="read-more-btn">Read More</a>
                 </div>
                 <div class="profile-card">
                     <img src="Image/child8.png" alt="Profile of Andy">
-                    <h3>Andy | July 2024</h3>
-                    <p>Let’s go on this incredible journey together! We can nurture my love for soccer, explore new adventures, and...</p>
+                    <h3>Salima | April 2024</h3>
+                    <p>Let’s go on this incredible journey together! We can nurture my love for athletics, explore new adventures, and...</p>
                     <a href="../auth/" class="read-more-btn">Read More</a>
                 </div>
                 <div class="profile-card">
-                    <img src="Image/child3.png" alt="Profile of Andy">
-                    <h3>Andy | July 2024</h3>
+                    <img src="Image/child9.png" alt="Profile of Andy">
+                    <h3>Charles | July 2024</h3>
                     <p>Let’s go on this incredible journey together! We can nurture my love for soccer, explore new adventures, and...</p>
                     <a href="../auth/" class="read-more-btn">Read More</a>
                 </div>

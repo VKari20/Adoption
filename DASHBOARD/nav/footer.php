@@ -91,19 +91,13 @@
                 <h4>OrphanConnect</h4>
                 <p>Our mission is to empower children in need by providing them with a loving, nurturing, and supportive environment.</p>
             </div>
-            <div>
-                <h4>Products</h4>
-                <p><a href="#">MDBootstrap</a></p>
-                <p><a href="#">MDWordPress</a></p>
-                <p><a href="#">BrandFlow</a></p>
-                <p><a href="#">Bootstrap Angular</a></p>
-            </div>
+            
             <div>
                 <h4>Useful Links</h4>
                 <p><a href="../auth/">Your Account</a></p>
-                <p><a href="#">Become an Affiliate</a></p>
-                <p><a href="#">Shipping Rates</a></p>
-                <p><a href="#">Help</a></p>
+                <p><a href="index.php">Home</a></p>
+                <p><a href="kids_corner.php">Kids corner</a></p>
+                <p><a href="#">Terms and Conditions</a></p>
             </div>
             <div>
                 <h4>Contact</h4>
