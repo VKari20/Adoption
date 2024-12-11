@@ -105,12 +105,12 @@
                                 </ul>
                             </div>
                         </li>
-                        <li class="nav-item">
+                        <!--<li class="nav-item">
                             <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'task_management.php' ? 'active' : ''; ?>" href="task_management.php">Task Management</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'reports.php' ? 'active' : ''; ?>" href="reports.php">Reports and Documentation</a>
-                        </li>
+                        </li>-->
                     </ul>
                 </div>
             </nav>
