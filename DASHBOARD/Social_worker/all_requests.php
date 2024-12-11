@@ -2,18 +2,7 @@
 // Start session and connect to the database
 session_start();
 
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "adoption";
-
-// Database connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+require_once 'connection.php';
 
 // Fetch data from the home_study_applications table
 $sql = "SELECT id AS id, full_name, occupation, marital_status, status FROM home_study_applications";
@@ -61,7 +50,7 @@ include "nav/nav.php";
                         echo "<td>{$row['marital_status']}</td>";
                         echo "<td>{$row['status']}</td>";
                         echo "<td>
-                                <a href='accept_application.php?id={$row['id']}' class='btn btn-success btn-sm'>Accept</a>
+                                <a href='accepted_requests.php?id={$row['id']}' class='btn btn-success btn-sm'>Accept</a>
                                 <a href='reject_application.php?id={$row['id']}' class='btn btn-danger btn-sm'>Reject</a>
                               </td>";
                         echo "</tr>";

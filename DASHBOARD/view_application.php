@@ -7,15 +7,23 @@ require_once 'connection.php'; // Import the database connection
 // Get application ID from URL
 if (isset($_GET['id'])) {
     $application_id = $_GET['id'];
+    if (!is_numeric($application_id)) {
+        die("Invalid Application ID.");
+    }
 } else {
     die("Application ID is required.");
 }
 
 // Fetch application details
-$sql = "SELECT application_id, parent_id, application_date, application_status, review_notes, final_decision_date 
-        FROM adoption_applications 
-        WHERE application_id = ?";
+$sql = "SELECT id, parent_id, full_name, home_address, occupation, marital_status, health_status, annual_income, criminal_record, code_of_conduct, adopt_reason, status, additional_notes
+        FROM home_study_applications
+        WHERE id = ?";
 $stmt = $conn->prepare($sql);
+
+if (!$stmt) {
+    die("Error preparing statement: " . $conn->error);
+}
+
 $stmt->bind_param("i", $application_id);
 $stmt->execute();
 $result = $stmt->get_result();
@@ -40,10 +48,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Update the application status
-    $update_sql = "UPDATE adoption_applications 
-                   SET application_status = ?, review_notes = ?, final_decision_date = NOW() 
-                   WHERE application_id = ?";
+    $update_sql = "UPDATE home_study_applications 
+                   SET status = ?, additional_notes = ? 
+                   WHERE id = ?";
     $update_stmt = $conn->prepare($update_sql);
+
+    if (!$update_stmt) {
+        die("Error preparing update statement: " . $conn->error);
+    }
+
     $update_stmt->bind_param("ssi", $new_status, $notes, $application_id);
     
     if ($update_stmt->execute()) {
@@ -66,38 +79,66 @@ include "nav/header.php";
     </div>
 
     <div class="container mt-5">
-        <h2 class="mb-4">Application Details</h2>
+      
         <table class="table table-bordered">
             <tr>
                 <th>Application ID</th>
-                <td><?php echo htmlspecialchars($application['application_id']); ?></td>
+                <td><?php echo htmlspecialchars($application['id']); ?></td>
             </tr>
             <tr>
                 <th>Parent ID</th>
                 <td><?php echo htmlspecialchars($application['parent_id']); ?></td>
             </tr>
             <tr>
-                <th>Application Date</th>
-                <td><?php echo htmlspecialchars($application['application_date']); ?></td>
+                <th>Full Name</th>
+                <td><?php echo htmlspecialchars($application['full_name']); ?></td>
+            </tr>
+            <tr>
+                <th>Home Address</th>
+                <td><?php echo htmlspecialchars($application['home_address']); ?></td>
             </tr>
             <tr>
                 <th>Status</th>
-                <td><?php echo htmlspecialchars($application['application_status']); ?></td>
+                <td><?php echo htmlspecialchars($application['status']); ?></td>
             </tr>
             <tr>
-                <th>Review Notes</th>
-                <td><?php echo htmlspecialchars($application['review_notes']); ?></td>
+                <th>Additional Notes</th>
+                <td><?php echo htmlspecialchars($application['additional_notes']); ?></td>
             </tr>
             <tr>
-                <th>Final Decision Date</th>
-                <td><?php echo htmlspecialchars($application['final_decision_date']); ?></td>
+                <th>Occupation</th>
+                <td><?php echo htmlspecialchars($application['occupation']); ?></td>
+            </tr>
+            <tr>
+                <th>Marital Status</th>
+                <td><?php echo htmlspecialchars($application['marital_status']); ?></td>
+            </tr>
+            <tr>
+                <th>Health Status</th>
+                <td><?php echo htmlspecialchars($application['health_status']); ?></td>
+            </tr>
+            <tr>
+                <th>Annual Income</th>
+                <td><?php echo htmlspecialchars($application['annual_income']); ?></td>
+            </tr>
+            <!-- <tr>
+                <th>References</th>
+                <td><?php echo htmlspecialchars($application['references']); ?></td>
+            </tr> -->
+            <tr>
+                <th>Climinal Record</th>
+                <td><?php echo htmlspecialchars($application['criminal_record']); ?></td>
+            </tr>
+            <tr>
+                <th>Code of Conduct</th>
+                <td><?php echo htmlspecialchars($application['code_of_conduct']); ?></td>
             </tr>
         </table>
 
         <!-- Action Form -->
         <form method="post">
             <div class="form-group">
-                <label for="notes">Review Notes</label>
+                <label for="notes">Additional Notes</label>
                 <textarea name="notes" id="notes" class="form-control" rows="4" required></textarea>
             </div>
             <button type="submit" name="action" value="accept" class="btn btn-success">Accept</button>
@@ -111,7 +152,7 @@ include "nav/header.php";
 
 <footer>
         <p>&copy; 2024 Kids Adoption. All rights reserved.</p>
-    </footer>
+</footer>
 
 <!-- Bootstrap JS and dependencies -->
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>

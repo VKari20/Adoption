@@ -61,8 +61,7 @@ include "nav/header.php";
                         echo "<td>{$row['marital_status']}</td>";
                         echo "<td>{$row['status']}</td>";
                         echo "<td>
-                                <a href='accept_application.php?id={$row['id']}' class='btn btn-success btn-sm'>Accept</a>
-                                <a href='reject_application.php?id={$row['id']}' class='btn btn-danger btn-sm'>Reject</a>
+                                <a href='view_application.php?id={$row['id']}' class='btn btn-info btn-sm'>View</a>
                               </td>";
                         echo "</tr>";
                         $serialNo++; // Increment the serial number

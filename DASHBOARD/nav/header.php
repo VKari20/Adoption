@@ -145,7 +145,7 @@
                                         <a class="nav-link" href="accept_request.php">Accepted Requests</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" href="rejected_requests.php">Rejected Requests</a>
+                                        <a class="nav-link" href="reject_request.php">Rejected Requests</a>
                                     </li>
                                     
                                 </ul>

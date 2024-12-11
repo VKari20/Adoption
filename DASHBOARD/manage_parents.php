@@ -43,7 +43,7 @@ include "nav/header.php";
           <tbody>
             <?php
             // Query to fetch prospective parents data
-            $sql = "SELECT parent_id, user_id, full_name, home_address, occupation, marital_status, home_study_status, preferences, status FROM prospective_parents";
+            $sql = "SELECT parent_id, user_id, full_name, home_address, occupation, marital_status, status, preferences, status FROM prospective_parents";
             $result = $conn->query($sql);
 
             if ($result->num_rows > 0) {
@@ -55,7 +55,7 @@ include "nav/header.php";
                     echo "<td>" . htmlspecialchars($row['home_address']) . "</td>";
                     echo "<td>" . htmlspecialchars($row['occupation']) . "</td>";
                     echo "<td>" . htmlspecialchars($row['marital_status']) . "</td>";
-                    echo "<td>" . htmlspecialchars($row['home_study_status']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['status']) . "</td>";
                     echo "<td>" . htmlspecialchars($row['preferences']) . "</td>";
                     echo "<td>" . htmlspecialchars($row['status']) . "</td>";
                     echo "<td>

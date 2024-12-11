@@ -26,11 +26,12 @@ if (isset($_GET['adoption_request_number']) && !empty($_GET['adoption_request_nu
         header("Location: accept_request.php");
         exit();  // Ensure the script stops after the redirect
     } else {
-        die("Error updating status: " . $stmt->error);
+        echo"Error updating status: {$stmt->error}";
     }
-} else {
-    die("Invalid or missing adoption request number. Please check the URL.");
-}
+} 
+// else {
+//     echo"Invalid or missing adoption request number. Please check the URL.";
+// }
 
 
 // Fetch accepted adoption requests
@@ -38,12 +39,13 @@ $sql = "SELECT adoption_request_number, adopter_name, adopter_email, contact_num
 $result = $conn->query($sql);
 
 if ($result === false) {
-    die("Error fetching accepted requests: " . $conn->error);
+    echo"Error fetching accepted requests: " . $conn->error;
 }
-
 $conn->close();
 
+
 include "nav/header.php"; // Include header or navigation bar
+
 ?>
 
 <!-- Main Content -->
