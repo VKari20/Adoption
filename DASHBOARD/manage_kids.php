@@ -1,7 +1,15 @@
 <?php
-require_once 'connection.php'; // Import the database connection
+// Start session and connect to the database
+session_start();
 
-// SQL query to fetch child details along with orphanage name
+require_once 'connection.php';
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// Fetch data from the database
 $sql = "SELECT 
             c.child_id, 
             c.full_name, 
@@ -16,200 +24,232 @@ $sql = "SELECT
 
 $result = $conn->query($sql);
 
-
-
 include "nav/header.php";
+
+// Function to calculate age
+function calculateAge($dob) {
+    $birthDate = new DateTime($dob);
+    $today = new DateTime('today');
+    $age = $birthDate->diff($today)->y;
+    return $age;
+}
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Manage Kids</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Kids</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css">
 </head>
 <body>
 
+<!-- Main Content -->
 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-    <h1 class="h2">Manage Kids</h1>
-  <a href="download_kids_report.php" class="btn btn-success">Download Report</a>
-  </div>
-  <div class="container">
-    <div class="table-responsive">
-      <table id="manageKidsTable" class="table table-striped table-hover">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Full Name</th>
-            <th>Gender</th>
-            <th>Education Level</th>
-            <th>Current Orphanage</th>
-            <th>Blood Group</th>
-            <th>Status</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-        <?php
-        // Fetch and display children from the database
-        $result = $conn->query("SELECT * FROM children");
-        while ($row = $result->fetch_assoc()) {
-            echo "<tr id='kid_{$row['child_id']}'>
-                    <td>{$row['full_name']}</td>
-                    <td>{$row['gender']}</td>
-                    <td>{$row['education_level']}</td>
-                    <td>{$row['blood_group']}</td>
-                    <td>{$row['status']}</td>
-                    <td>
-                        <button class='btn btn-warning edit-btn' onclick='editKid({$row['child_id']})'>Edit</button>
-                        <button class='btn btn-danger delete-btn' onclick='deleteKid({$row['child_id']})'>Delete</button>
-                    </td>
-                  </tr>";
-                  
-        }
-        ?> 
-        </tbody>
-      </table>
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+      <h1 class="h2">Manage Kids</h1>
+      <a href="download_kids_report.php" class="btn btn-success">Download Report</a>
     </div>
-  </div>
+    <div class="table-responsive">
+        <table id="manageKidsTable" class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Full Name</th>
+                    <th>Date of Birth</th>
+                    <th>Age</th>
+                    <th>Gender</th>
+                    <th>Education Level</th>
+                    <th>Current Orphanage</th>
+                    <th>Blood Group</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                // Display children data
+                if ($result->num_rows > 0) {
+                    $count = 1;
+                    while ($row = $result->fetch_assoc()) {
+                        $age = calculateAge($row['date_of_birth']); // Calculate age
+                        echo "<tr id='kid_" . $row['child_id'] . "'>";
+                        echo "<td>" . $count . "</td>";
+                        echo "<td>" . htmlspecialchars($row['full_name']) . "</td>";
+                        echo "<td>" . htmlspecialchars($row['date_of_birth']) . "</td>";
+                        echo "<td>" . $age . "</td>"; // Display age
+                        echo "<td>" . htmlspecialchars($row['gender']) . "</td>";
+                        echo "<td>" . htmlspecialchars($row['education_level']) . "</td>";
+                        echo "<td>" . htmlspecialchars($row['current_orphanage']) . "</td>";
+                        echo "<td>" . htmlspecialchars($row['blood_group']) . "</td>";
+                        echo "<td>" . htmlspecialchars($row['status']) . "</td>";
+                        echo "<td>
+                                <button class='btn btn-info' onclick='editKid(" . $row['child_id'] . ")'>Edit</button>
+                                <button class='btn btn-danger' onclick='deleteKid(" . $row['child_id'] . ")'>Delete</button>
+                              </td>";
+                        echo "</tr>";
+                        $count++;
+                    }
+                } else {
+                    echo "<tr><td colspan='10'>No records found</td></tr>";
+                }
+                ?>
+            </tbody>
+        </table>
+    </div>
 </main>
 
-<!-- Edit Modal for Kid -->
-<div class="modal fade" id="editKidModal" tabindex="-1" role="dialog" aria-labelledby="editKidModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="editKidModalLabel">Edit Kid</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form id="editKidForm">
-          <input type="hidden" id="editKidId">
-          <div class="form-group">
-            <label for="editFullName">Full Name</label>
-            <input type="text" class="form-control" id="editFullName" required>
-          </div>
-          <div class="form-group">
-            <label for="editEducationLevel">Education Level</label>
-            <input type="text" class="form-control" id="editEducationLevel" required>
-          </div>
-          <div class="form-group">
-            <label for="editGender">Gender</label>
-            <select class="form-control" id="editGender">
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="editStatus">Status</label>
-            <input type="text" class="form-control" id="editStatus" required>
-          </div>
-          <div class="form-group">
-            <label for="editBloodGroup">Blood Group</label>
-            <input type="text" class="form-control" id="editBloodGroup" required>
-          </div>
-          <button type="button" class="btn btn-primary" onclick="saveKidChanges()">Save Changes</button>
-        </form>
-      </div>
+<!-- Edit Modal -->
+<div class="modal fade" id="editKidModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Kid</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editKidForm">
+                    <input type="hidden" id="editKidId">
+                    <div class="form-group">
+                        <label for="editFullName">Full Name</label>
+                        <input type="text" class="form-control" id="editFullName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editDateOfBirth">Date of Birth</label>
+                        <input type="date" class="form-control" id="editDateOfBirth" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editGender">Gender</label>
+                        <select class="form-control" id="editGender" required>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="editEducationLevel">Education Level</label>
+                        <input type="text" class="form-control" id="editEducationLevel" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editCurrentOrphanage">Current Orphanage</label>
+                        <input type="text" class="form-control" id="editCurrentOrphanage" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editBloodGroup">Blood Group</label>
+                        <input type="text" class="form-control" id="editBloodGroup" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editStatus">Status</label>
+                        <input type="text" class="form-control" id="editStatus" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </form>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
-<footer>
-        <p>&copy; 2024 Kids Adoption. All rights reserved.</p>
-    </footer>
-
+<!-- Scripts -->
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
 <script>
-  $(document).ready(function () {
-    $('#manageKidsTable').DataTable();
-  });
-
-  function editKid(childId) {
-    $.ajax({
-      url: 'get_kid.php',
-      type: 'POST',
-      data: { child_id: childId },
-      success: function(response) {
-        const kid = JSON.parse(response);
-        $('#editKidId').val(kid.child_id);
-        $('#editFullName').val(kid.full_name);
-        $('#editEducationLevel').val(kid.education_level);
-        $('#editGender').val(kid.gender);
-        $('#editStatus').val(kid.status);
-        $('#editBloodGroup').val(kid.blood_group);
-        $('#editKidModal').modal('show');
-      }
+    $(document).ready(function () {
+        $('#manageKidsTable').DataTable();
     });
-  }
 
-  function saveKidChanges() {
-    const childId = $('#editKidId').val();
-    const fullName = $('#editFullName').val();
-    const educationLevel = $('#editEducationLevel').val();
-    const gender = $('#editGender').val();
-    const status = $('#editStatus').val();
-    const bloodGroup = $('#editBloodGroup').val();
+    // Function to edit kid's details
+    function editKid(childId) {
+        $.ajax({
+            url: 'get_kid.php',
+            type: 'POST',
+            data: { child_id: childId },
+            success: function (response) {
+                try {
+                    const kid = JSON.parse(response);
+                    if (kid.error) {
+                        alert(kid.error);
+                        return;
+                    }
+                    $('#editKidId').val(kid.child_id);
+                    $('#editFullName').val(kid.full_name);
+                    $('#editDateOfBirth').val(kid.date_of_birth);
+                    $('#editGender').val(kid.gender);
+                    $('#editEducationLevel').val(kid.education_level);
+                    $('#editCurrentOrphanage').val(kid.current_orphanage);
+                    $('#editBloodGroup').val(kid.blood_group);
+                    $('#editStatus').val(kid.status);
+                    $('#editKidModal').modal('show');
+                } catch (e) {
+                    console.error(e);
+                    alert("An error occurred.");
+                }
+            },
+            error: function () {
+                alert("Failed to fetch data. Please try again.");
+            }
+        });
+    }
 
-    $.ajax({
-      url: 'update_kid.php',
-      type: 'POST',
-      data: {
-        child_id: childId,
-        full_name: fullName,
-        education_level: educationLevel,
-        gender: gender,
-        status: status,
-        blood_group: bloodGroup
-      },
-      success: function(response) {
-        if (response === 'success') {
-          $('#editKidModal').modal('hide');
-          const row = $('#kid_' + childId);
-          row.find('td:eq(1)').text(fullName);
-          row.find('td:eq(3)').text(gender);
-          row.find('td:eq(4)').text(educationLevel);
-          row.find('td:eq(5)').text(bloodGroup);
-          row.find('td:eq(6)').text(status);
-          alert('Kid updated successfully');
-        } else {
-          alert('Failed to update kid: ' + response);
+    // Handle form submission for editing
+    $('#editKidForm').on('submit', function (e) {
+        e.preventDefault(); // Prevent the form from submitting normally
+
+        const kidData = {
+            child_id: $('#editKidId').val(),
+            full_name: $('#editFullName').val(),
+            date_of_birth: $('#editDateOfBirth').val(),
+            gender: $('#editGender').val(),
+            education_level: $('#editEducationLevel').val(),
+            current_orphanage: $('#editCurrentOrphanage').val(),
+            blood_group: $('#editBloodGroup').val(),
+            status: $('#editStatus').val()
+        };
+
+        $.ajax({
+            url: 'update_kid.php',
+            type: 'POST',
+            data: kidData,
+            success: function (response) {
+                alert("Kid information updated successfully!");
+                $('#editKidModal').modal('hide');
+                location.reload(); // Reload the page to reflect the changes
+            },
+            error: function () {
+                alert("Failed to update data. Please try again.");
+            }
+        });
+    });
+
+    // Function to delete a kid record
+    function deleteKid(childId) {
+        if (confirm("Are you sure you want to delete this record?")) {
+            $.ajax({
+                url: 'delete_kid.php',
+                type: 'POST',
+                data: { child_id: childId },
+                success: function (response) {
+                    alert("Kid record deleted successfully!");
+                    $('#kid_' + childId).remove(); // Remove the row from the table
+                },
+                error: function () {
+                    alert("Failed to delete data. Please try again.");
+                }
+            });
         }
-      },
-      error: function(xhr, status, error) {
-        alert('AJAX Error: ' + error);
-      }
-    });
-  }
-
-  function deleteKid(childId) {
-    if (confirm('Are you sure you want to delete this kid?')) {
-      $.ajax({
-        url: 'delete_kid.php',
-        type: 'POST',
-        data: { child_id: childId },
-        success: function(response) {
-          if (response === 'success') {
-            $('#kid_' + childId).remove();
-            alert('Kid deleted successfully');
-        } else {
-          alert('Failed to delete kid');
-        }
-      },
-      error: function(xhr, status, error) {
-        alert('AJAX Error: ' + error);
-      }
-    });
-  }
-}
+    }
 </script>
+
+</body>
+</html>
+
+<?php
+$conn->close();
+?>

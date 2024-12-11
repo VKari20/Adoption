@@ -2,8 +2,12 @@
 require_once 'connection.php'; // Import the database connection
 
 // Fetch only new adoption requests (assuming 'pending' status represents new requests)
-$sql = "SELECT id, adoption_request_number, adopter_name, adopter_email, contact_number, status FROM adoption_requests WHERE status = 'pending'";
+$sql = "SELECT parent_id, adoption_request_number, adopter_name, adopter_email, contact_number, status FROM adoption_requests WHERE status = 'pending'";
 $result = $conn->query($sql);
+
+if (!$result) {
+    die("Error executing query: " . $conn->error);
+}
 
 $conn->close();
 
@@ -17,7 +21,6 @@ include "nav/header.php";
     </div>
     <body>
     <div class="container mt-5">
-        <h2 class="mb-4">New Requests</h2>
         <table id="adoptionRequests" class="table table-striped table-bordered">
             <thead>
                 <tr>
@@ -32,21 +35,27 @@ include "nav/header.php";
             </thead>
             <tbody>
                 <?php
-                if ($result->num_rows > 0) {
+                if ($result && $result->num_rows > 0) {
                     $s_no = 1; // To display serial number
                     // Output data of each row
-                    while($row = $result->fetch_assoc()) {
+                    while ($row = $result->fetch_assoc()) {
+                        // Ensure 'parent_id' exists in the row
+                        if (!isset($row['parent_id'])) {
+                            echo "<tr><td colspan='7' class='text-danger'>Missing parent_id for a row.</td></tr>";
+                            continue;
+                        }
+
                         echo "<tr>
                                 <td>" . $s_no++ . "</td>
-                                <td>" . $row["adoption_request_number"] . "</td>
-                                <td>" . $row["adopter_name"] . "</td>
-                                <td>" . $row["adopter_email"] . "</td>
-                                <td>" . $row["contact_number"] . "</td>
-                                <td>" . $row["status"] . "</td>
+                                <td>" . htmlspecialchars($row["adoption_request_number"]) . "</td>
+                                <td>" . htmlspecialchars($row["adopter_name"]) . "</td>
+                                <td>" . htmlspecialchars($row["adopter_email"]) . "</td>
+                                <td>" . htmlspecialchars($row["contact_number"]) . "</td>
+                                <td>" . htmlspecialchars($row["status"]) . "</td>
                                 <td>
-                                    <a href='view_request.php?id=" . $row["id"] . "' class='btn btn-info'><i class='fa fa-eye'></i> View</a>
-                                    <a href='accept_request.php?id=" . $row["id"] . "' class='btn btn-success'><i class='fa fa-check'></i> Accept</a>
-                                    <a href='reject_request.php?id=" . $row["id"] . "' class='btn btn-danger'><i class='fa fa-times'></i> Reject</a>
+                                    <a href='view_request.php?id=" . htmlspecialchars($row["parent_id"]) . "' class='btn btn-info'><i class='fa fa-eye'></i> View</a>
+                                    <a href='accept_request.php?id=" . htmlspecialchars($row["parent_id"]) . "' class='btn btn-success'><i class='fa fa-check'></i> Accept</a>
+                                    <a href='reject_request.php?id=" . htmlspecialchars($row["parent_id"]) . "' class='btn btn-danger'><i class='fa fa-times'></i> Reject</a>
                                 </td>
                               </tr>";
                     }

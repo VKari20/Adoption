@@ -104,6 +104,11 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" href="home_study_approval.php">
+                                Home Study Approval
+                            </a>
+                        </li>
+                        <!--<li class="nav-item">
                             <a class="nav-link" data-toggle="collapse" href="#collapseAdoption" role="button" aria-expanded="false" aria-controls="collapseAdoption">
                                 Home Study Applications
                             </a>
@@ -116,14 +121,14 @@
                                         <a class="nav-link" href="new_home_study_requests.php">New Requests</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" href="accepted_requests.php">Accepted Requests</a>
+                                        <a class="nav-link" href="accept_request.php">Accepted Requests</a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link" href="rejected_requests.php">Rejected Requests</a>
                                     </li>
                                     
                                 </ul>
-                            </div>
+                            </div>-->
                         <li class="nav-item">
                             <a class="nav-link" data-toggle="collapse" href="#collapseAdoption" role="button" aria-expanded="false" aria-controls="collapseAdoption">
                                 Adoption Request
@@ -137,7 +142,7 @@
                                         <a class="nav-link" href="new_adoption_request.php">New Requests</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" href="accepted_requests.php">Accepted Requests</a>
+                                        <a class="nav-link" href="accept_request.php">Accepted Requests</a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link" href="rejected_requests.php">Rejected Requests</a>
@@ -146,7 +151,7 @@
                                 </ul>
                             </div>
                         </li>
-                        <a class="nav-link" data-toggle="collapse" href="#collapseAdoption" role="button" aria-expanded="false" aria-controls="collapseAdoption">
+                        <!--<a class="nav-link" data-toggle="collapse" href="#collapseAdoption" role="button" aria-expanded="false" aria-controls="collapseAdoption">
                                 Adoption Application
                             </a>
                             <div class="collapse" id="collapseAdoption">
@@ -165,9 +170,9 @@
                                     </li>
                                 </ul>
                             </div>
-                        </li>
+                        </li>-->
                         
-                        <li class="nav-item">
+                       <!-- <li class="nav-item">
                             <a class="nav-link" data-toggle="collapse" href="#collapseReport" role="button" aria-expanded="false" aria-controls="collapseReport">
                                 Report
                             </a>
@@ -198,6 +203,6 @@
                             </div>
                         </li>
                     </ul>
-                </div>
+                </div>-->
             </nav>
  

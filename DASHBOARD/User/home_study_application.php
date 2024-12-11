@@ -86,12 +86,12 @@ include "nav/nav.php"; // Include navigation
                 </div>
                 <!-- New Fields for Home Study -->
                 <div class="form-group">
-                    <label for="email">Email Address:</label>
-                    <input type="email" id="email" name="email" class="form-control" placeholder="Email" required>
+                    <label for="applicant_email">Email Address:</label>
+                    <input type="email" id="applicant_email" name="applicant_email" class="form-control" placeholder="Email" required>
                 </div>
                 <div class="form-group">
-                    <label for="contact_number">Contact Number:</label>
-                    <input type="text" id="contact_number" name="contact_number" class="form-control" placeholder="Contact number" required>
+                    <label for="contact_info">Contact Number:</label>
+                    <input type="text" id="contact_info" name="contact_info" class="form-control" placeholder="Contact number" required>
                 </div>
 
                 <div class="form-group">

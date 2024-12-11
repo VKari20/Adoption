@@ -1,9 +1,21 @@
 <?php
 require_once 'connection.php'; // Import the database connection
 
+// Check if the database connection was successful
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
 // Fetch only rejected adoption requests
-$sql = "SELECT id, adoption_request_number, adopter_name, adopter_email, contact_number, status FROM adoption_requests WHERE status = 'rejected'";
+$sql = "SELECT parent_id, adoption_request_number, adopter_name, adopter_email, contact_number, status FROM adoption_requests WHERE status = 'rejected'";
+
+// Execute the query and check if it was successful
 $result = $conn->query($sql);
+
+if (!$result) {
+    // Query failed, show an error message
+    die("Error executing query: " . $conn->error);
+}
 
 $conn->close();
 
@@ -17,7 +29,7 @@ include "nav/header.php";
     </div>
     <body>
     <div class="container mt-5">
-        <h2 class="mb-4">Rejected Requests</h2>
+        
         <table id="adoptionRequests" class="table table-striped table-bordered">
             <thead>
                 <tr>
@@ -35,17 +47,17 @@ include "nav/header.php";
                 if ($result->num_rows > 0) {
                     $s_no = 1; // To display serial number
                     // Output data of each row
-                    while($row = $result->fetch_assoc()) {
+                    while ($row = $result->fetch_assoc()) {
                         echo "<tr>
                                 <td>" . $s_no++ . "</td>
-                                <td>" . $row["adoption_request_number"] . "</td>
-                                <td>" . $row["adopter_name"] . "</td>
-                                <td>" . $row["adopter_email"] . "</td>
-                                <td>" . $row["contact_number"] . "</td>
-                                <td>" . $row["status"] . "</td>
+                                <td>" . htmlspecialchars($row["adoption_request_number"]) . "</td>
+                                <td>" . htmlspecialchars($row["adopter_name"]) . "</td>
+                                <td>" . htmlspecialchars($row["adopter_email"]) . "</td>
+                                <td>" . htmlspecialchars($row["contact_number"]) . "</td>
+                                <td>" . htmlspecialchars($row["status"]) . "</td>
                                 <td>
-                                    <a href='view_request.php?id=" . $row["id"] . "' class='btn btn-info'><i class='fa fa-eye'></i> View</a>
-                                    <a href='undo_rejection.php?id=" . $row["id"] . "' class='btn btn-success'><i class='fa fa-refresh'></i> Undo Rejection</a>
+                                    <a href='view_request.php?id=" . htmlspecialchars($row["parent_id"]) . "' class='btn btn-info'><i class='fa fa-eye'></i> View</a>
+                                    <a href='undo_rejection.php?id=" . htmlspecialchars($row["parent_id"]) . "' class='btn btn-success'><i class='fa fa-refresh'></i> Undo Rejection</a>
                                 </td>
                               </tr>";
                     }

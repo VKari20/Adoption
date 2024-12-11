@@ -66,7 +66,9 @@ include "nav/header.php";
                             echo "<td>" . htmlspecialchars($row['adopter_email']) . "</td>";
                             echo "<td>" . htmlspecialchars($row['request_date']) . "</td>";
                             echo "<td>" . htmlspecialchars($row['status']) . "</td>";
+                            // Update the link to point to the correct page
                             echo "<td>
+                                    <a href='view_home_study.php?id=" . $row['request_id'] . "' class='btn btn-info btn-sm'>View Details</a>
                                     <a href='approve_home_study.php?id=" . $row['request_id'] . "&action=approve' class='btn btn-success btn-sm'>Approve</a>
                                     <a href='approve_home_study.php?id=" . $row['request_id'] . "&action=reject' class='btn btn-danger btn-sm'>Reject</a>
                                   </td>";

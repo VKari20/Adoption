@@ -25,7 +25,7 @@ if (!$result) {
 }
 
 // Include header
-include "nav/nav.php";
+include "nav/header.php";
 ?>
 
 <!-- Main Content -->

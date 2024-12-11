@@ -1,43 +1,33 @@
-<?php 
-// Start session and connect to the database
+<?php
+// Start the session and enable error reporting for debugging
 session_start();
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 
-require_once 'connection.php'; // Include your database connection file
+// Include the database connection
+require_once 'connection.php';
 
-// Check if 'parent_id' is set in the query string
+// Check if the parent_id is passed in the URL
 if (isset($_GET['id'])) {
-    $parent_id = $_GET['id']; // Assuming you're passing parent_id in the URL
+    $parent_id = $_GET['id'];
 
-    // Modify the query to fetch data using the parent_id
-    $sql = "SELECT parent_id, adoption_request_number, adopter_name, adopter_email, contact_number, status, 
-            picture, code_of_conduct_file_path, national_id_number, annual_income, preferences, 
-            home_address, occupation, marital_status, additional_notes, created_at
-            FROM adoption_requests WHERE parent_id = ?";  // Use parent_id here
-
-    // Prepare and execute the query safely
+    // Query to fetch the adoption request details based on parent_id
+    $sql = "SELECT * FROM adoption_requests WHERE parent_id = ?";
     $stmt = $conn->prepare($sql);
-    if ($stmt === false) {
-        die("Error in preparing statement: " . $conn->error);
-    }
-    
-    $stmt->bind_param("i", $parent_id);  // 'i' for integer because parent_id is assumed to be an integer
+    $stmt->bind_param("i", $parent_id);  // Assuming parent_id is an integer
     $stmt->execute();
     $result = $stmt->get_result();
 
-    // Check if the record exists
     if ($result->num_rows > 0) {
-        // Fetch the data of the request
-        $row = $result->fetch_assoc();
+        $row = $result->fetch_assoc(); // Fetch the details
     } else {
-        die("Request not found");
+        die("Adoption request not found.");
     }
-
-    $stmt->close();
 } else {
-    die("Invalid request");
+    die("Invalid request ID.");
 }
 
-// Include header
+// Include the header
 include "nav/header.php";
 ?>
 
@@ -47,7 +37,6 @@ include "nav/header.php";
         <h1 class="h2">View Adoption Request - <?php echo $row['adopter_name']; ?></h1>
     </div>
 
-    <h2>Adoption Request Details</h2>
     <table class="table table-bordered">
         <tbody>
             <tr>
@@ -123,26 +112,21 @@ include "nav/header.php";
         </tbody>
     </table>
 
- <!-- Take Action Section -->
-<div class="form-group">
-    <h3>Take Action</h3>
-    <?php if (isset($row['parent_id'])): ?>
+    <!-- Take Action Section -->
+    <div class="form-group">
+        <h3>Take Action</h3>
         <a href="accept_request.php?id=<?php echo htmlspecialchars($row['parent_id']); ?>" 
            class="btn btn-success btn-lg" 
            onclick="return confirm('Are you sure you want to accept this request?')">Accept</a>
         <a href="reject_request.php?id=<?php echo htmlspecialchars($row['parent_id']); ?>" 
            class="btn btn-danger btn-lg" 
            onclick="return confirm('Are you sure you want to reject this request?')">Reject</a>
-    <?php else: ?>
-        <p>Error: Parent ID is not set.</p>
-    <?php endif; ?>
-</div>
-
+    </div>
 </main>
 
 <footer>
-        <p>&copy; 2024 Kids Adoption. All rights reserved.</p>
-    </footer>
+    <p>&copy; 2024 Kids Adoption. All rights reserved.</p>
+</footer>
 
 <!-- Bootstrap JS and dependencies -->
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>

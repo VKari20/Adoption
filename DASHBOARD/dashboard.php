@@ -40,25 +40,37 @@ if ($count_users_result->num_rows > 0) {
     $total_users = $row['total_users'];
 }
 
+// Query to get the total count of adoption requests
+$count_requests_sql = "SELECT COUNT(*) as total_requests FROM adoption_requests";  // Change the table name as per your DB schema
+$count_requests_result = $conn->query($count_requests_sql);
+$total_requests = 0;  // Default value
+
+// If the query returns rows, fetch the total count
+if ($count_requests_result->num_rows > 0) {
+    $row = $count_requests_result->fetch_assoc();
+    $total_requests = $row['total_requests'];  // Get the count of adoption requests
+}
+
+
 // Count pending adoption applications
 $count_pending_sql = "SELECT COUNT(*) as pending_applications FROM adoption_applications WHERE application_status = 'pending'";
 $count_pending_result = $conn->query($count_pending_sql);
-$pending_applications = $count_pending_result->fetch_assoc()['pending_applications'] ?? 0;
+//$pending_applications = $count_pending_result->fetch_assoc()['pending_applications'] ?? 0;
 
 // Count under review adoption applications
 $count_under_review_sql = "SELECT COUNT(*) as under_review_applications FROM adoption_applications WHERE application_status = 'under review'";
 $count_under_review_result = $conn->query($count_under_review_sql);
-$under_review_applications = $count_under_review_result->fetch_assoc()['under_review_applications'] ?? 0;
+//$under_review_applications = $count_under_review_result->fetch_assoc()['under_review_applications'] ?? 0;
 
 // Count approved adoption applications
 $count_approved_sql = "SELECT COUNT(*) as approved_applications FROM adoption_applications WHERE application_status = 'approved'";
 $count_approved_result = $conn->query($count_approved_sql);
-$approved_applications = $count_approved_result->fetch_assoc()['approved_applications'] ?? 0;
+//$approved_applications = $count_approved_result->fetch_assoc()['approved_applications'] ?? 0;
 
 // Count rejected adoption applications
 $count_rejected_sql = "SELECT COUNT(*) as rejected_applications FROM adoption_applications WHERE application_status = 'rejected'";
 $count_rejected_result = $conn->query($count_rejected_sql);
-$rejected_applications = $count_rejected_result->fetch_assoc()['rejected_applications'] ?? 0;
+//$rejected_applications = $count_rejected_result->fetch_assoc()['rejected_applications'] ?? 0;
 
 $conn->close();
 
@@ -111,12 +123,12 @@ include "nav/header.php"
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
-                            <h5 class="card-title" style="color:white">All Adoption Applications</h5>
+                            <h5 class="card-title" style="color:white">All Adoption Requests</h5>
                             <h3 style="color:white">5</h3>
                         </div>
                         <i class="fa fa-money fa-3x"></i>
                     </div>
-                    <a href="#" class="btn btn-light mt-3">View Details</a>
+                    <a href="all_adoption_requests.php" class="btn btn-light mt-3">View Details</a>
                 </div>
             </div>
         </div>
