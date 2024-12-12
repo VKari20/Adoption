@@ -88,7 +88,7 @@
                 <li><a href="index.php">Dashboard</a></li>
                 <li><a href="home_study_application.php">Home Study Application</a></li>
                 <li><a href="adoption_request.php">Adoption Request</a></li>
-                <li><a href="adoption_application.php">Adoption Application</a></li>
+                <li><a href="adoption_success.php">View Adoption</a></li>
                 <li><a href="post_adoption_followup.php"></a>
                 <li><a href="logout.php">Log Out</a></li>
             </ul>

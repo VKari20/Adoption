@@ -51,7 +51,16 @@ if ($count_requests_result->num_rows > 0) {
     $total_requests = $row['total_requests'];  // Get the count of adoption requests
 }
 
+// Query to fetch the total count of adoption requests
+$adoption_count_query = "SELECT COUNT(*) AS total_requests FROM matches";
+$adoption_count_result = $conn->query($adoption_count_query);
 
+// Check if the query is successful
+if ($adoption_count_result) {
+    $adoption_count = $adoption_count_result->fetch_assoc()['total_requests'];
+} else {
+    die("Error fetching adoption count: " . $conn->error);
+}
 // Count pending adoption applications
 $count_pending_sql = "SELECT COUNT(*) as pending_applications FROM adoption_applications WHERE application_status = 'pending'";
 $count_pending_result = $conn->query($count_pending_sql);
@@ -124,7 +133,8 @@ include "nav/header.php"
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
                             <h5 class="card-title" style="color:white">All Adoption Requests</h5>
-                            <h3 style="color:white">5</h3>
+                            <h3><?= htmlspecialchars($adoption_count); ?></h3>
+
                         </div>
                         <i class="fa fa-money fa-3x"></i>
                     </div>
@@ -133,7 +143,7 @@ include "nav/header.php"
             </div>
         </div>
     </div>
-    <div class="row">
+    <!--<div class="row">
         <div class="col-md-4">
             <div class="card text-white bg-info mb-3">
                 <div class="card-body">
@@ -175,7 +185,7 @@ include "nav/header.php"
                     <a href="rejected_requests.php" class="btn btn-light mt-3">View Details</a>
                 </div>
             </div>
-        </div>
+        </div>-->
     </div>
 </main>
 </div>

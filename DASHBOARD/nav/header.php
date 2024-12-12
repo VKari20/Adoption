@@ -151,6 +151,16 @@
                                 </ul>
                             </div>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="assign_parent_to_child.php">
+                                Assign Parent to Child
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="successful_adoption.php">
+                                Completed Adoptions
+                            </a>
+                        </li>
                         <!--<a class="nav-link" data-toggle="collapse" href="#collapseAdoption" role="button" aria-expanded="false" aria-controls="collapseAdoption">
                                 Adoption Application
                             </a>

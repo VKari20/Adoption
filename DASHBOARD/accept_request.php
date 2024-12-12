@@ -55,7 +55,7 @@ include "nav/header.php"; // Include header or navigation bar
     </div>
 
     <div class="container mt-5">
-        <h2 class="mb-4">Accepted Requests</h2>
+      
 
         <!-- Check if there are any accepted requests -->
         <?php if ($result->num_rows > 0): ?>
